@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Carousel</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+        }
+        .carousel {
+            position: relative;
+            height: 100%;
+            width: 100%;
+        }
+        .carousel img {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            max-width: 100%;
+            max-height: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div class="carousel">
+        <!-- Images will be inserted here -->
+    </div>
+    <script>
+        const images = [];
+        const carousel = document.querySelector('.carousel');
+
+        // Function to load images from the root directory
+        function loadImages() {
+            fetch('/')
+                .then(response => response.text())
+                .then(data => {
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(data, 'text/html');
+                    const imgElements = doc.querySelectorAll('img');
+                    imgElements.forEach(img => {
+                        images.push(img.src);
+                    });
+                    displayImages();
+                });
+        }
+
+        // Function to display images in the carousel
+        function displayImages() {
+            let index = 0;
+            setInterval(() => {
+                carousel.innerHTML = `<img src="${images[index]}" alt="Image ${index + 1}">`;
+                index = (index + 1) % images.length;
+            }, 3000); // Change image every 3 seconds
+        }
+
+        // Load images on page load
+        window.onload = loadImages;
+    </script>
+</body>
+</html>
