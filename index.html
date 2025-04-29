@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Carousel</title>
+    <title>Wallboard</title>
     <style>
         body, html {
             margin: 0;
@@ -31,23 +31,13 @@
         <!-- Images will be inserted here -->
     </div>
     <script>
-        const images = [];
+        const images = [
+            '1.png',
+            '2.png',
+            '3.png',
+            'excited%20crowd.gif'
+        ];
         const carousel = document.querySelector('.carousel');
-
-        // Function to load images from the root directory
-        function loadImages() {
-            fetch('/')
-                .then(response => response.text())
-                .then(data => {
-                    const parser = new DOMParser();
-                    const doc = parser.parseFromString(data, 'text/html');
-                    const imgElements = doc.querySelectorAll('img');
-                    imgElements.forEach(img => {
-                        images.push(img.src);
-                    });
-                    displayImages();
-                });
-        }
 
         // Function to display images in the carousel
         function displayImages() {
@@ -58,8 +48,8 @@
             }, 3000); // Change image every 3 seconds
         }
 
-        // Load images on page load
-        window.onload = loadImages;
+        // Display images on page load
+        window.onload = displayImages;
     </script>
 </body>
 </html>
