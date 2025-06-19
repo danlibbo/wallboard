@@ -1,0 +1,32 @@
+name: Generate GIF on Image Change
+on:
+  push:
+    paths:
+      - '*.png'
+      - '*.jpg'
+      - '*.jpeg'
+      - '*.gif'
+
+jobs:
+  build-gif:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: pip install Pillow
+      - name: Generate GIF
+        run: python generate_gif.py
+      - name: Commit and push updated GIF
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git add Signage.gif
+          git commit -m "Update Signage.gif"
+          git push
