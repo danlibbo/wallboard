@@ -1,55 +1,77 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wallboard</title>
+    <title>BHN digital signage</title>
     <style>
+        /* Set CSS styles to make the GIF full-screen */
         body, html {
-            margin: 0;
-            padding: 0;
             height: 100%;
+            margin: 0;
             overflow: hidden;
         }
-        .carousel {
-            position: relative;
-            height: 100%;
+
+        img {
             width: 100%;
+            height: 100%;
+            object-fit: contain;
+            position: fixed;
+            top: 0;
+            left: 0;
+            display: none; /* Initially hide the image */
         }
-        .carousel img {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            max-width: 100%;
-            max-height: 100%;
+
+        @keyframes gradientAnimation {
+            0% { background-position: bottom right; }
+            100% { background-position: top left; }
+        }
+
+        .gradient-background {
+            background: linear-gradient(30deg, white, #1C365E, #82C341, #1C365E, white);
+            background-size: 800% 400%;
+            animation: gradientAnimation 7s ease infinite;
+            animation-direction: alternate;
+        }
+
+        .black-background {
+            background-color: black;
         }
     </style>
-</head>
-<body>
-    <div class="carousel">
-        <!-- Images will be inserted here -->
-    </div>
     <script>
-        const images = [
-            '1.png',
-            '2.png',
-            '3.png',
-            'excited%20crowd.gif'
-        ];
-        const carousel = document.querySelector('.carousel');
+        var gifShown = false; // Variable to track if the GIF has been shown
 
-        // Function to display images in the carousel
-        function displayImages() {
-            let index = 0;
-            setInterval(() => {
-                carousel.innerHTML = `<img src="${images[index]}" alt="Image ${index + 1}">`;
-                index = (index + 1) % images.length;
-            }, 3000); // Change image every 3 seconds
+        // Function to show the GIF
+        function showGif() {
+            var img = document.querySelector("img");
+            img.style.display = "block"; // Show the image
+            document.body.classList.remove("gradient-background"); // Remove gradient background
+            document.body.classList.add("black-background"); // Add black background
+            gifShown = true; // Update the variable to indicate the GIF has been shown
         }
 
-        // Display images on page load
-        window.onload = displayImages;
+        // Function to show the GIF after a random delay
+        function delayedShowGif() {
+            var delays = [0, 3500, 7000, 10500, 14000, 17500, 21000]; // Specified delays in milliseconds
+            var delay = delays[Math.floor(Math.random() * delays.length)]; // Randomly select one of the specified delays
+            setTimeout(function() {
+                if (!gifShown) { // Only show the GIF if it hasn't been shown yet
+                    showGif();
+                }
+            }, delay);
+        }
+
+        // Event listener to show the GIF immediately on click
+        document.addEventListener("click", function() {
+            if (!gifShown) { // Only show the GIF if it hasn't been shown yet
+                showGif();
+            }
+        });
+
+        // Auto-reload every 15 minutes
+        setTimeout(function() { location.reload(); }, 900000); // 15 minutes (900000 milliseconds)
     </script>
+</head>
+<body class="gradient-background" onload="delayedShowGif()">
+    <img src="Signage.gif">
 </body>
 </html>
